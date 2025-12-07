@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aqsh Insights</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class', // Enable class-based dark mode
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+              serif: ['"Noto Serif JP"', 'serif'],
+            },
+            colors: {
+              glass: {
+                100: 'rgba(255, 255, 255, 0.1)',
+                200: 'rgba(255, 255, 255, 0.2)',
+                300: 'rgba(255, 255, 255, 0.3)',
+                border: 'rgba(255, 255, 255, 0.1)',
+              }
+            },
+            animation: {
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'blob': 'blob 10s infinite',
+              'shimmer': 'shimmer 2.5s linear infinite',
+              'glow': 'glow 2s ease-in-out infinite alternate',
+            },
+            keyframes: {
+              blob: {
+                '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' },
+              },
+              shimmer: {
+                '0%': { backgroundPosition: '-200% 0' },
+                '100%': { backgroundPosition: '200% 0' },
+              },
+              glow: {
+                'from': { boxShadow: '0 0 10px rgba(99, 102, 241, 0.2)' },
+                'to': { boxShadow: '0 0 20px rgba(99, 102, 241, 0.6), 0 0 10px rgba(168, 85, 247, 0.4)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        /* background-color: #050b14; Removed to allow dynamic theme */
+        overflow: hidden; /* Prevent body scroll, handle in app */
+      }
+      
+      /* Glassmorphism Utilities - Dynamic for Dark/Light */
+      .glass-panel {
+        @apply bg-white/80 dark:bg-[#0f172a]/60 backdrop-blur-xl border border-slate-200 dark:border-white/10;
+      }
+      
+      .glass-card {
+        @apply bg-white/60 dark:bg-white/[0.03] backdrop-blur-md border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.1)];
+      }
+      
+      .glass-card:hover {
+        @apply bg-white/90 dark:bg-white/[0.07] border-indigo-200 dark:border-white/15 shadow-md dark:shadow-[0_0_20px_rgba(99,102,241,0.15)];
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      ::-webkit-scrollbar-thumb {
+        @apply bg-slate-300 dark:bg-white/10 rounded-full;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        @apply bg-slate-400 dark:bg-white/20;
+      }
+      
+      /* Input Auto-fill style fix */
+      .dark input:-webkit-autofill,
+      .dark input:-webkit-autofill:hover, 
+      .dark input:-webkit-autofill:focus, 
+      .dark input:-webkit-autofill:active{
+          -webkit-box-shadow: 0 0 0 30px #0f172a inset !important;
+          -webkit-text-fill-color: white !important;
+          transition: background-color 5000s ease-in-out 0s;
+      }
+      
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover, 
+      input:-webkit-autofill:focus, 
+      input:-webkit-autofill:active{
+          -webkit-box-shadow: 0 0 0 30px #f8fafc inset !important;
+          -webkit-text-fill-color: #0f172a !important;
+          transition: background-color 5000s ease-in-out 0s;
+      }
+
+      /* Markdown Styles - Dark Mode Defaults (Light mode overrides in component) */
+      .markdown-body {
+        @apply text-slate-700 dark:text-slate-200;
+      }
+      .markdown-body h2 {
+        font-size: 1.5em;
+        font-weight: 700;
+        margin-top: 1.5em;
+        margin-bottom: 0.75em;
+        padding-bottom: 0.3em;
+        @apply border-b border-slate-200 dark:border-white/10 text-slate-900 dark:text-slate-50;
+      }
+      .markdown-body h3 {
+        font-size: 1.25em;
+        font-weight: 600;
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+        @apply text-slate-800 dark:text-slate-300;
+      }
+      .markdown-body p {
+        margin-bottom: 1em;
+        line-height: 1.7;
+        @apply text-slate-600 dark:text-slate-400;
+      }
+      .markdown-body ul {
+        list-style-type: disc;
+        padding-left: 1.5em;
+        margin-bottom: 1em;
+        @apply text-slate-600 dark:text-slate-400;
+      }
+      .markdown-body li {
+        margin-bottom: 0.25em;
+      }
+      .markdown-body blockquote {
+        @apply bg-slate-100 dark:bg-white/5 border-l-4 border-indigo-500 text-slate-600 dark:text-slate-300;
+        padding: 0.5em 1em;
+        margin-bottom: 1em;
+        font-style: italic;
+      }
+      .markdown-body strong {
+        @apply text-indigo-600 dark:text-indigo-300 font-bold;
+      }
+      .markdown-body code {
+        @apply bg-slate-200 dark:bg-black/30 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-white/10;
+        padding: 0.2em 0.4em;
+        border-radius: 0.25em;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.9em;
+      }
+
+      /* Table Styles */
+      .markdown-body table {
+        @apply w-full border-collapse my-6 text-sm overflow-hidden rounded-lg shadow-sm border border-slate-200 dark:border-white/10;
+        display: block;
+        overflow-x: auto;
+      }
+      .markdown-body thead {
+        @apply bg-slate-100 dark:bg-white/5 border-b-2 border-slate-200 dark:border-white/10;
+      }
+      .markdown-body th {
+        @apply p-3 lg:p-4 text-left font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap;
+      }
+      .markdown-body td {
+        @apply p-3 lg:p-4 border-b border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-400 align-top;
+      }
+      .markdown-body tr:last-child td {
+        @apply border-b-0;
+      }
+      .markdown-body tr:hover td {
+        @apply bg-slate-50 dark:bg-white/[0.02];
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "jszip": "https://aistudiocdn.com/jszip@^3.10.1",
+    "marked": "https://aistudiocdn.com/marked@^12.0.0",
+    "recharts": "https://aistudiocdn.com/recharts@^2.12.0",
+    "jspdf": "https://aistudiocdn.com/jspdf@^2.5.1",
+    "html2canvas": "https://aistudiocdn.com/html2canvas@^1.4.1"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
