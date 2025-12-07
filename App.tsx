@@ -259,7 +259,7 @@ function App() {
                                         title="購入率100%を目指すための改善企画書を生成"
                                     >
                                         {isGeneratingPlan ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
-                                        <span className="hidden sm:inline">改善案を生成 (β)</span>
+                                        <span className="hidden sm:inline">改善した企画書を生成</span>
                                     </button>
                                 )}
 
